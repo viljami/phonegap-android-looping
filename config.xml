@@ -19,7 +19,7 @@
 
 	<preference name="fullscreen" value="true" />
 	<preference name="target-device" value="universal" /> <!-- handset, tablet, or universal -->
-	<preference name="orientation" value="landscape" /> <!-- default, landscape, or portrait -->
+	<preference name="orientation" value="portrait" /> <!-- default, landscape, or portrait -->
 	
 	<!-- IOS Spesific 
 	<preference name="webviewbounce" value="false" />
