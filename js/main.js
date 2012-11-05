@@ -1,5 +1,45 @@
+/**
+ * Multiplatform game loop
+ * Source: http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+ * 
+ * Usage:
+ * 
+ * window.requestAnimationFrame(function( time ){
+ *	// time ~= +new Date // the unix time
+ * });
+ * 
+ * Date: 11.10.2012
+ */
+
+// shim layer with setTimeout fallback
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = 
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+})();
+
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating
 // shim layer with setTimeout fallback
+/*
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       || 
           window.webkitRequestAnimationFrame || 
@@ -10,6 +50,7 @@ window.requestAnimFrame = (function(){
             window.setTimeout(callback, 1000 / 60);
           };
 })();
+*/
 
 // http://mobile.smashingmagazine.com/2012/10/19/design-your-own-mobile-game/
 // namespace our game
@@ -269,7 +310,7 @@ var POP = {
     // and render
     loop: function() {
 
-        requestAnimFrame( POP.loop );
+        window.requestAnimationFrame( POP.loop );
 
         POP.update();
         POP.render();
